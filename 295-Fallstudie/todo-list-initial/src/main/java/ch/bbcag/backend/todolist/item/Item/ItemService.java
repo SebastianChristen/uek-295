@@ -29,8 +29,8 @@ public class ItemService {
 
 
 
-    public List<?> findByName(String name) {
-        return ItemMapper.toResponseDTO(itemRepository.findByNameContains(name));
+    public List<ItemResponseDTO> findByName(String name) {
+        return itemRepository.findByNameContains(name).stream().map(ItemMapper::toResponseDTO).toList();
     }
 
     public List<ItemResponseDTO> findAll(){
@@ -40,6 +40,11 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
     public ItemResponseDTO insert(ItemRequestDTO item){
+
+        //---- Irgendwie so etwas, nicht sicher...
+        //Item nonexistent = new Item();
+        //nonexistent.setDescription(ItemRequestDTO.getDescription();
+
         return ItemMapper.toResponseDTO(itemRepository.save(item)); //TODO <------ Hier stehen geblieben
     }
 
