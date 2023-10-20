@@ -1,7 +1,6 @@
-package ch.bbcag.backend.todolist.item.Item;
+package ch.bbcag.backend.todolist.item;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.Objects;
 
 import ch.bbcag.backend.todolist.person.Person;

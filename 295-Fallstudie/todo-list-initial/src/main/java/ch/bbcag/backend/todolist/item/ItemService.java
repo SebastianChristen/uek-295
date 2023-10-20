@@ -1,7 +1,5 @@
-package ch.bbcag.backend.todolist.item.Item;
+package ch.bbcag.backend.todolist.item;
 
-import ch.bbcag.backend.todolist.item.Item.ItemRepository;
-import ch.bbcag.backend.todolist.item.Item.ItemResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

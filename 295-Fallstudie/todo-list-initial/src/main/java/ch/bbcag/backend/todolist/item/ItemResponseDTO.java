@@ -1,4 +1,4 @@
-package ch.bbcag.backend.todolist.item.Item;
+package ch.bbcag.backend.todolist.item;
 
 import java.sql.Timestamp;
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package ch.bbcag.backend.todolist.person;
 
-import ch.bbcag.backend.todolist.item.Item.Item;
+import ch.bbcag.backend.todolist.item.Item;
 
 import java.util.List;
 

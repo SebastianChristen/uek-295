@@ -1,7 +1,5 @@
-package ch.bbcag.backend.todolist.item.Item;
+package ch.bbcag.backend.todolist.item;
 
-import ch.bbcag.backend.todolist.person.PersonService;
-import nonapi.io.github.classgraph.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
-import java.util.List;
 
 
 //TODO nicht itemRepository, sondern SERVICE
