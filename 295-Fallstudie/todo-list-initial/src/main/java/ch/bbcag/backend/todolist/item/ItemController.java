@@ -1,6 +1,8 @@
 package ch.bbcag.backend.todolist.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +36,22 @@ public class ItemController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> insert(@RequestBody ItemResponseDTO newItem ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(itemService.insert(newItem));
+    public ResponseEntity<?> insert(@RequestBody ItemRequestDTO newItem ) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(itemService.insert(newItem));
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        }
     }
 
     @DeleteMapping("{id}")
-    public void deleteById(@PathVariable Integer id) {
-       itemService.deleteById(id);
+    public ResponseEntity<?> deleteById(@PathVariable Integer id) {
+        try {
+            itemService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item could not be deleted");
+        }
     }
 
 
@@ -54,6 +65,16 @@ public class ItemController {
         }
     }
 
+    @PatchMapping("{id}")
+    public ResponseEntity<?> update(@RequestBody ItemRequestDTO item, @PathVariable Integer id) {
+        try {
+            return ResponseEntity.ok(itemService.update(item, id));
+        } catch (DataIntegrityViolationException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT);
+        } catch (EntityNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
 
 
 
