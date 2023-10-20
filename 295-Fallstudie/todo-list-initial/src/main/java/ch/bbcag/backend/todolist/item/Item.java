@@ -14,6 +14,9 @@ public class Item {
     public Item()
     {}
 
+    public Item(Integer id) {
+        this.id = id;
+    }
     private String description;
     private String name;
 
@@ -29,9 +32,6 @@ public class Item {
     @JoinColumn(name = "person_id")
     private Person person;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;
@@ -49,11 +49,11 @@ public class Item {
         return name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -96,7 +96,7 @@ public class Item {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return id == item.id;
+        return Objects.equals(id, item.id);
     }
 
     @Override
