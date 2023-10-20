@@ -1,11 +1,8 @@
 package ch.bbcag.backend.todolist.item.Item;
 
-import ch.bbcag.backend.todolist.person.Person;
-import ch.bbcag.backend.todolist.person.PersonMapper;
-import ch.bbcag.backend.todolist.person.PersonRepository;
-import ch.bbcag.backend.todolist.person.PersonResponseDTO;
+import ch.bbcag.backend.todolist.item.Item.ItemRepository;
+import ch.bbcag.backend.todolist.item.Item.ItemResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -30,36 +27,45 @@ public class ItemService {
 
 
     public List<ItemResponseDTO> findByName(String name) {
-        return itemRepository.findByNameContains(name).stream().map(ItemMapper::toResponseDTO).toList();
+        List<Item> items = itemRepository.findByNameContains(name);
+        return items.stream().map(ItemMapper::toResponseDTO).toList();
     }
 
     public List<ItemResponseDTO> findAll(){
-        return itemRepository.findAll().stream().map(ItemMapper::toResponseDTO).toList();
+        List<Item> items = itemRepository.findAll();
+        return items.stream().map(ItemMapper::toResponseDTO).toList();
     }
     public void deleteById(Integer id){
         itemRepository.deleteById(id);
     }
-    public ItemResponseDTO insert(ItemRequestDTO item){
-
-        //---- Irgendwie so etwas, nicht sicher...
-        //Item nonexistent = new Item();
-        //nonexistent.setDescription(ItemRequestDTO.getDescription();
-
-        return ItemMapper.toResponseDTO(itemRepository.save(item)); //TODO <------ Hier stehen geblieben
+    public ItemResponseDTO insert(ItemRequestDTO itemRequestDTO) {
+        return ItemMapper.toResponseDTO(itemRepository.save(ItemMapper.fromRequestDTO(itemRequestDTO)));
     }
 
 
     public ItemResponseDTO update(ItemRequestDTO itemRequestDTO, Integer itemId){
-        Item existing = itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);
+        Item existingItem = itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);
 
-        mergeItems(existing, ItemMapper.fromRequestDTO(itemRequestDTO));
+        mergeItems(existingItem, ItemMapper.fromRequestDTO(itemRequestDTO));
 
-        return ItemMapper.toResponseDTO(itemRepository.save(existing));}
+        return ItemMapper.toResponseDTO(itemRepository.save(existingItem));
+    }
 
-
-    private void mergeItems(Item existing, Item changing) {
-        if (changing.getName() != null) {
-            existing.setName(changing.getName());
+    private void mergeItems(Item existingItem, Item changingItem) {
+        if (changingItem.getName() != null) {
+            existingItem.setName(changingItem.getName());
+        }
+        if (changingItem.getDescription() != null) {
+            existingItem.setDescription(changingItem.getDescription());
+        }
+        if (changingItem.getDoneAt() != null) {
+            existingItem.setDoneAt(changingItem.getDoneAt());
+        }
+        if (changingItem.getDeletedAt() != null) {
+            existingItem.setDeletedAt(changingItem.getDeletedAt());
+        }
+        if (changingItem.getPerson() != null) {
+            existingItem.setPerson(changingItem.getPerson());
         }
 
     }
