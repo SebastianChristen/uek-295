@@ -10,6 +10,10 @@ public class ItemRequestDTO {
     private String name;
     private Timestamp doneAt;
 
+
+    public ItemRequestDTO() {
+    }
+
     public String getDescription() {
         return description;
     }

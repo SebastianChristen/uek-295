@@ -1,4 +1,5 @@
 package ch.bbcag.backend.todolist.item;
+import ch.bbcag.backend.todolist.person.Person;
 
 public class ItemMapper {
 
@@ -12,12 +13,9 @@ public class ItemMapper {
         itemResponseDTO.setDescription(item.getDescription());
         //itemResponseDTO.setPersonId(item.getPersonId());
         itemResponseDTO.setName(item.getName());
+        itemResponseDTO.setPersonId(item.getPerson().getId());
 
-        if (itemResponseDTO.getId() == null) {
-            return null;
-        } else {
-            return itemResponseDTO;
-        }
+        return itemResponseDTO;
 
     }
 
@@ -29,7 +27,11 @@ public class ItemMapper {
         //item.setCreatedAt(itemRequestDTO.getCreatedAt());
         item.setDeletedAt(itemRequestDTO.getDeletedAt());
         item.setDoneAt(itemRequestDTO.getDoneAt());
+        item.setDeletedAt(itemRequestDTO.getDeletedAt());
 
+        if (itemRequestDTO.getPersonId() != null) {
+            item.setPerson(new Person(itemRequestDTO.getPersonId()));
+        }
 
         return item;
 

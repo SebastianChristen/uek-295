@@ -58,7 +58,7 @@ public class ItemController {
 
     @GetMapping()
     public ResponseEntity<?> findByName(@RequestParam(required=false) String name) {
-        if (!name.isBlank()) {
+        if (!(name==null || name.isBlank())) {
             return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findByName(name));
         } else {
             return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findAll());
