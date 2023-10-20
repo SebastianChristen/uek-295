@@ -8,14 +8,14 @@ public class PersonResponseDTO extends PersonRequestDTO {
 
 
 
-    private List<Integer> list; //TODO --> Hier stecken gebleiben, variable heisst list
+    private List<Integer> itemIds; //TOnotDOanymore --> Hier stecken geblieben, variable heisst itemIds
 
-    public List<Integer> getList() {
-        return list;
+    public List<Integer> getItemIds() {
+        return itemIds;
     }
 
-    public void setList(List<Integer> list) {
-        this.list = list;
+    public void setItemIds(List<Integer> itemIds) {
+        this.itemIds = itemIds;
     }
 
     public Integer getId() {
@@ -35,11 +35,11 @@ public class PersonResponseDTO extends PersonRequestDTO {
             return false;
         }
 
-        return super.equals(obj) && id.equals(personResponseDTO.id);
+        return super.equals(obj) && id.equals(personResponseDTO.id) && itemIds.equals(personResponseDTO.itemIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id);
+        return Objects.hash(super.hashCode(), id, itemIds);
     }
 }

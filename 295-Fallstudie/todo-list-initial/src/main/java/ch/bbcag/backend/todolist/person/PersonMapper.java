@@ -15,7 +15,7 @@ public class PersonMapper {
 
         if (person.getItems() != null) {
             List<Integer> itemIds = person.getItems().stream().map(Item::getId).toList();
-            personResponseDTO.setList(itemIds); //TODO setitemid
+            personResponseDTO.setItemIds(itemIds);
         }
 
         return personResponseDTO;

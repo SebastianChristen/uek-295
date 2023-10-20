@@ -58,5 +58,8 @@ public class PersonService {
             String newPassword = passwordEncoder.encode(changing.getPassword());
             existing.setPassword(newPassword);
         }
+        if (changing.getItems() != null) {
+            existing.setItems(changing.getItems());
+        }
     }
 }

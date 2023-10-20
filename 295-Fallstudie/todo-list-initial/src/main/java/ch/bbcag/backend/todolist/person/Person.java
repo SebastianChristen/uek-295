@@ -32,7 +32,6 @@ public class Person {
 
 
     public Person() {
-
     }
 
     public Person(Integer id) {
