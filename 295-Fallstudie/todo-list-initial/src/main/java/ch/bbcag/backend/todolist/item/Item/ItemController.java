@@ -4,6 +4,7 @@ import ch.bbcag.backend.todolist.person.PersonService;
 import nonapi.io.github.classgraph.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,41 +19,41 @@ import java.util.List;
 @RequestMapping("/items")
 public class ItemController {
 
-    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
     @Autowired
-    public ItemController(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
+    public ItemController(ItemService itemService) {
+        this.itemService = itemService;
     }
 
 
     @GetMapping("{id}")
-    public Item findById(@PathVariable Integer id) {
+    public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
-            return itemRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+            return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findById(id));
         } catch (EntityNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping()
-    public Item insert(@RequestBody Item item) {
-        return itemRepository.save(item);
+    public ResponseEntity<?> insert(@RequestBody ItemResponseDTO newItem ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemService.insert(newItem));
     }
 
     @DeleteMapping("{id}")
     public void deleteById(@PathVariable Integer id) {
-        itemRepository.deleteById(id);
+       itemService.deleteById(id);
     }
 
 
 
     @GetMapping()
-    public List<Item> findByName(@RequestParam(required=false) String name) {
+    public ResponseEntity<?> findByName(@RequestParam(required=false) String name) {
         if (!name.isBlank()) {
-            return itemRepository.findByNameContains(name);
+            return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findByName(name));
         } else {
-            return itemRepository.findAll();
+            return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findAll());
         }
     }
 
