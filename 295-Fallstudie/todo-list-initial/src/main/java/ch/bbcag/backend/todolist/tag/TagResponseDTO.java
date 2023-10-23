@@ -5,18 +5,18 @@ import java.util.Objects;
 
 public class TagResponseDTO extends TagRequestDTO {
 
-    private Integer Id;
+    private Integer id;
     private List<Integer> itemIds;
 
     public TagResponseDTO() {
     }
 
     public Integer getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Integer id) {
-        Id = id;
+        this.id = id;
     }
 
     public List<Integer> getItemIds() {
@@ -28,16 +28,20 @@ public class TagResponseDTO extends TagRequestDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        TagResponseDTO that = (TagResponseDTO) o;
-        return Objects.equals(Id, that.Id) && Objects.equals(itemIds, that.itemIds);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof TagResponseDTO tagResponseDTO)) {
+            return false;
+        }
+
+        return super.equals(obj)
+                && id.equals(tagResponseDTO.id) && itemIds.equals(tagResponseDTO.itemIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), Id, itemIds);
+        return Objects.hash(super.hashCode(), id, itemIds);
     }
 }

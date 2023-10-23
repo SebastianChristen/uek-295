@@ -1,6 +1,7 @@
 package ch.bbcag.backend.todolist.item;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemRequestDTO {
@@ -9,7 +10,7 @@ public class ItemRequestDTO {
     private Integer personId;
     private String name;
     private Timestamp doneAt;
-
+    private List<Integer> tagIds;
 
     public ItemRequestDTO() {
     }
@@ -54,16 +55,33 @@ public class ItemRequestDTO {
         this.doneAt = doneAt;
     }
 
+    public List<Integer> getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(List<Integer> tagIds) {
+        this.tagIds = tagIds;
+    }
+
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemRequestDTO that = (ItemRequestDTO) o;
-        return Objects.equals(description, that.description) && Objects.equals(deletedAt, that.deletedAt) && Objects.equals(personId, that.personId) && Objects.equals(name, that.name) && Objects.equals(doneAt, that.doneAt);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ItemRequestDTO itemRequestDTO)) {
+            return false;
+        }
+
+        return personId.equals(itemRequestDTO.personId)
+                && name.equals(itemRequestDTO.name)
+                && description.equals(itemRequestDTO.description)
+                && doneAt.equals(itemRequestDTO.doneAt)
+                && deletedAt.equals(itemRequestDTO.deletedAt)
+                && tagIds.equals(itemRequestDTO.tagIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(description, deletedAt, personId, name, doneAt);
+        return Objects.hash(name, personId, description, doneAt, deletedAt, tagIds);
     }
 }

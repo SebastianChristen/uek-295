@@ -9,18 +9,6 @@ public class ItemResponseDTO extends ItemRequestDTO {
     private Integer id;
     private Timestamp createdAt;
 
-    /*----------------- start neu unsicher -------------------- */
-    private List<Integer> tagIds;
-
-    public List<Integer> getTagIds() {
-        return tagIds;
-    }
-
-    public void setTagIds(List<Integer> tagIds) {
-        this.tagIds = tagIds;
-    }
-    /*----------------- ende neu unsicher -------------------- */
-
     public Integer getId() {
         return id;
     }
@@ -38,16 +26,21 @@ public class ItemResponseDTO extends ItemRequestDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        ItemResponseDTO that = (ItemResponseDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(tagIds, that.tagIds);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof ItemResponseDTO itemResponseDTO)) {
+            return false;
+        }
+
+        return super.equals(obj)
+                && id.equals(itemResponseDTO.id)
+                && createdAt.equals(itemResponseDTO.createdAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, tagIds);
+        return Objects.hash(super.hashCode(), id, createdAt);
     }
 }

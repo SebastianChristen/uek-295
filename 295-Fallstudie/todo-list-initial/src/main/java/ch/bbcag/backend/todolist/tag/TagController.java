@@ -1,5 +1,6 @@
 package ch.bbcag.backend.todolist.tag;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,7 +24,7 @@ public class TagController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
             return ResponseEntity.status(HttpStatus.FOUND).body(tagService.findById(id));
@@ -56,11 +57,10 @@ public class TagController {
 
     @GetMapping()
     public ResponseEntity<?> findByName(@RequestParam(required = false) String name) {
-        if (!(name == null || name.isBlank())) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(tagService.findByName(name));
-        } else {
-            return ResponseEntity.status(HttpStatus.FOUND).body(tagService.findAll());
+        if (StringUtils.isBlank(name)) {
+            return ResponseEntity.ok(tagService.findAll());
         }
+        return ResponseEntity.ok(tagService.findByName(name));
     }
 
     @PatchMapping("{id}")

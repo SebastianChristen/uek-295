@@ -18,11 +18,15 @@ public class TagRequestDTO {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TagRequestDTO that = (TagRequestDTO) o;
-        return Objects.equals(name, that.name);
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof TagRequestDTO tagRequestDTO)) {
+            return false;
+        }
+
+        return name.equals(tagRequestDTO.name);
     }
 
     @Override

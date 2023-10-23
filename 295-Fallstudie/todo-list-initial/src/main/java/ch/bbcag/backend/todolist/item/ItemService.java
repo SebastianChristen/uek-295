@@ -22,7 +22,15 @@ public class ItemService {
         return ItemMapper.toResponseDTO(itemRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
+    public List<ItemResponseDTO> findByNameAndTagName(String name, String tagName) {
+        List<Item> items = itemRepository.findByNameAndTagName(name, tagName);
+        return items.stream().map(ItemMapper::toResponseDTO).toList();
+    }
 
+    public List<ItemResponseDTO> findByTagName(String tagName) {
+        List<Item> items = itemRepository.findByTagName(tagName);
+        return items.stream().map(ItemMapper::toResponseDTO).toList();
+    }
 
     public List<ItemResponseDTO> findByName(String name) {
         List<Item> items = itemRepository.findByNameContains(name);
@@ -65,10 +73,9 @@ public class ItemService {
         if (changingItem.getPerson() != null) {
             existingItem.setPerson(changingItem.getPerson());
         }
-        if (changingItem.getTagIds != null) {
-            existingItem.setTagIds(changingItem.getTagIds());
+        if (changingItem.getLinkedTags() != null) {
+            existingItem.setLinkedTags(changingItem.getLinkedTags());
         }
-
     }
 
 }

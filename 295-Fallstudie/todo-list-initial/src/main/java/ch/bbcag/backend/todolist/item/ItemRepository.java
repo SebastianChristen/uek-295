@@ -20,11 +20,9 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query(
             "SELECT i FROM Item i " +
             "JOIN i.linkedTags t " +
-            "WHERE t.name LIKE CONCAT('%', :tagName, '%') and " +
-            "i.name LIKE CONCAT('%', :itemName, '%')"
-    )
-    List<Item> findByNameAndTagName(@Param("tagName") String tagName, String itemName);
-
+            "WHERE i.name LIKE CONCAT('%', :name, '%') " +
+            "AND t.name LIKE CONCAT('%', :tagName, '%') ")
+    List<Item> findByNameAndTagName(@Param("name") String name, @Param("tagName") String tagName);
 
 
 

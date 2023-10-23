@@ -1,5 +1,6 @@
 package ch.bbcag.backend.todolist.item;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,7 +27,7 @@ public class ItemController {
     }
 
 
-    @GetMapping("{id}")
+    @GetMapping(path = "{id}")
     public ResponseEntity<?> findById(@PathVariable Integer id) {
         try {
             return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findById(id));
@@ -56,13 +57,16 @@ public class ItemController {
 
 
 
-    @GetMapping()
-    public ResponseEntity<?> findByName(@RequestParam(required=false) String name) {
-        if (!(name==null || name.isBlank())) {
-            return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findByName(name));
-        } else {
-            return ResponseEntity.status(HttpStatus.FOUND).body(itemService.findAll());
+    @GetMapping
+    public ResponseEntity<?> findByName(@RequestParam(required=false) String name, @RequestParam(required = false) String tagName) {
+        if (StringUtils.isNotBlank(name) && StringUtils.isNotBlank(tagName)) {
+            return ResponseEntity.ok(itemService.findByNameAndTagName(name, tagName));
+        } else if (StringUtils.isNotBlank(tagName)) {
+            return ResponseEntity.ok(itemService.findByTagName(tagName));
+        } else if (StringUtils.isNotBlank(name)) {
+            return ResponseEntity.ok(itemService.findByName(name));
         }
+        return ResponseEntity.ok(itemService.findAll());
     }
 
     @PatchMapping("{id}")

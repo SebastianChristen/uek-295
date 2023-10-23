@@ -2,24 +2,31 @@ package ch.bbcag.backend.todolist.tag;
 
 import ch.bbcag.backend.todolist.item.Item;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 public class Tag {
 
-    @ManyToMany
-    private Set<Item> linkedItems; /* <----- Kein Plan wo das hinkommt oder was es macht aber ok*/
+    @ManyToMany(mappedBy = "linkedTags")
+    private Set<Item> linkedItems = new HashSet<>();
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true)
     private String name;
+
+
+    public Tag() {
+    }
+
+    public Tag(Integer id) {
+        this.id = id;
+    }
 
     public Set<Item> getLinkedItems() {
         return linkedItems;

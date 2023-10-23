@@ -12,7 +12,7 @@ public class TagMapper {
         tagResponseDTO.setId(tag.getId());
         tagResponseDTO.setName(tag.getName());
 
-        if (tag.getId() != null) { /* TODO eventuell noch fehler        v */
+        if (tag.getLinkedItems() != null) {
             List<Integer> itemIds = tag.getLinkedItems().stream().map(Item::getId).toList();
             tagResponseDTO.setItemIds(itemIds);
         }

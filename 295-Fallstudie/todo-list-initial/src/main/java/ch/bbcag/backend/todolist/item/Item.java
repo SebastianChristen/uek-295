@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 import ch.bbcag.backend.todolist.person.Person;
+import ch.bbcag.backend.todolist.tag.Tag;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -31,6 +34,13 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "person_id")
     private Person person;
+
+    @ManyToMany
+    @JoinTable(
+            name = "item_tag",
+            joinColumns = @JoinColumn(name = "item_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
+    private Set<Tag> linkedTags = new HashSet<>();
 
 
     public String getDescription() {
@@ -89,6 +99,14 @@ public class Item {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public Set<Tag> getLinkedTags() {
+        return linkedTags;
+    }
+
+    public void setLinkedTags(Set<Tag> linkedTags) {
+        this.linkedTags = linkedTags;
     }
 
     @Override
