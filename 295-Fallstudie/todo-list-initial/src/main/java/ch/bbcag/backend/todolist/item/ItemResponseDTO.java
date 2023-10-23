@@ -1,12 +1,25 @@
 package ch.bbcag.backend.todolist.item;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Objects;
 
 public class ItemResponseDTO extends ItemRequestDTO {
 
     private Integer id;
     private Timestamp createdAt;
+
+    /*----------------- start neu unsicher -------------------- */
+    private List<Integer> tagIds;
+
+    public List<Integer> getTagIds() {
+        return tagIds;
+    }
+
+    public void setTagIds(List<Integer> tagIds) {
+        this.tagIds = tagIds;
+    }
+    /*----------------- ende neu unsicher -------------------- */
 
     public Integer getId() {
         return id;
@@ -30,11 +43,11 @@ public class ItemResponseDTO extends ItemRequestDTO {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ItemResponseDTO that = (ItemResponseDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(createdAt, that.createdAt);
+        return Objects.equals(id, that.id) && Objects.equals(tagIds, that.tagIds);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, createdAt);
+        return Objects.hash(super.hashCode(), id, tagIds);
     }
 }

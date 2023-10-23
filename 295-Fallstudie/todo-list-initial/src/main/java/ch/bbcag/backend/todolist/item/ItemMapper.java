@@ -1,11 +1,14 @@
 package ch.bbcag.backend.todolist.item;
 import ch.bbcag.backend.todolist.person.Person;
+import ch.bbcag.backend.todolist.tag.TagResponseDTO;
 
 public class ItemMapper {
 
 
     public static ItemResponseDTO toResponseDTO(Item item) {
         ItemResponseDTO itemResponseDTO = new ItemResponseDTO();
+        TagResponseDTO tag = new TagResponseDTO();
+
         itemResponseDTO.setId(item.getId());
         itemResponseDTO.setCreatedAt(item.getCreatedAt());
         itemResponseDTO.setDeletedAt(item.getDeletedAt());
@@ -14,6 +17,7 @@ public class ItemMapper {
         //itemResponseDTO.setPersonId(item.getPersonId());
         itemResponseDTO.setName(item.getName());
         itemResponseDTO.setPersonId(item.getPerson().getId());
+        itemResponseDTO.setTagIds(tag.getItemIds()); /* <-------- TODO prolly falsch idk... */
 
         return itemResponseDTO;
 

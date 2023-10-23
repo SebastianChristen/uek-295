@@ -65,6 +65,9 @@ public class ItemService {
         if (changingItem.getPerson() != null) {
             existingItem.setPerson(changingItem.getPerson());
         }
+        if (changingItem.getTagIds != null) {
+            existingItem.setTagIds(changingItem.getTagIds());
+        }
 
     }
 
