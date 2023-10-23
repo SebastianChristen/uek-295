@@ -1,10 +1,14 @@
 package ch.bbcag.backend.todolist.item;
 
+import ch.bbcag.backend.todolist.FailedValidationException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ItemService {
@@ -17,8 +21,7 @@ public class ItemService {
     }
 
 
-
-    public ItemResponseDTO findById(Integer id){
+    public ItemResponseDTO findById(Integer id) {
         return ItemMapper.toResponseDTO(itemRepository.findById(id).orElseThrow(EntityNotFoundException::new));
     }
 
@@ -37,19 +40,21 @@ public class ItemService {
         return items.stream().map(ItemMapper::toResponseDTO).toList();
     }
 
-    public List<ItemResponseDTO> findAll(){
+    public List<ItemResponseDTO> findAll() {
         List<Item> items = itemRepository.findAll();
         return items.stream().map(ItemMapper::toResponseDTO).toList();
     }
-    public void deleteById(Integer id){
+
+    public void deleteById(Integer id) {
         itemRepository.deleteById(id);
     }
+
     public ItemResponseDTO insert(ItemRequestDTO itemRequestDTO) {
         return ItemMapper.toResponseDTO(itemRepository.save(ItemMapper.fromRequestDTO(itemRequestDTO)));
     }
 
 
-    public ItemResponseDTO update(ItemRequestDTO itemRequestDTO, Integer itemId){
+    public ItemResponseDTO update(ItemRequestDTO itemRequestDTO, Integer itemId) {
         Item existingItem = itemRepository.findById(itemId).orElseThrow(EntityNotFoundException::new);
 
         mergeItems(existingItem, ItemMapper.fromRequestDTO(itemRequestDTO));
@@ -58,9 +63,16 @@ public class ItemService {
     }
 
     private void mergeItems(Item existingItem, Item changingItem) {
+        Map<String, List<String>> errors = new HashMap<>();
+
         if (changingItem.getName() != null) {
-            existingItem.setName(changingItem.getName());
+            if (StringUtils.isNotBlank(changingItem.getName())) {
+                existingItem.setName(changingItem.getName());
+            } else {
+                errors.put("name", List.of("name must not be empty"));
+            }
         }
+
         if (changingItem.getDescription() != null) {
             existingItem.setDescription(changingItem.getDescription());
         }
@@ -76,6 +88,9 @@ public class ItemService {
         if (changingItem.getLinkedTags() != null) {
             existingItem.setLinkedTags(changingItem.getLinkedTags());
         }
+
+        if (!errors.isEmpty()) { throw new FailedValidationException(errors); }
+
     }
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 
 
 //TODO nicht itemRepository, sondern SERVICE
@@ -37,7 +38,7 @@ public class ItemController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> insert(@RequestBody ItemRequestDTO newItem ) {
+    public ResponseEntity<?> insert(@Valid @RequestBody ItemRequestDTO newItem ) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(itemService.insert(newItem));
         } catch (DataIntegrityViolationException e) {

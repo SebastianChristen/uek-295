@@ -1,10 +1,14 @@
 package ch.bbcag.backend.todolist.tag;
 
+import ch.bbcag.backend.todolist.FailedValidationException;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TagService {
@@ -50,9 +54,17 @@ public class TagService {
 
 
     private void mergeTags(Tag existingTag, Tag changingTag) {
+        Map<String, List<String>> errors = new HashMap<>();
         if (changingTag.getName() != null) {
-            existingTag.setName(changingTag.getName());
+            if (StringUtils.isNotBlank(changingTag.getName())) {
+                existingTag.setName(changingTag.getName());
+            } else {
+                errors.put("name", List.of("name must not be empty"));
+            }
         }
+
+        if (!errors.isEmpty()) { throw new FailedValidationException(errors); }
+
 
     }
 

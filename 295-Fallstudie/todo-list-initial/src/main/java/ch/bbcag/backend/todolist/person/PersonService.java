@@ -1,12 +1,16 @@
 package ch.bbcag.backend.todolist.person;
 
+import ch.bbcag.backend.todolist.FailedValidationException;
 import ch.bbcag.backend.todolist.security.AuthRequestDTO;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PersonService {
@@ -51,15 +55,34 @@ public class PersonService {
     }
 
     private void mergePersons(Person existing, Person changing) {
-        if (changing.getUsername() != null) {
-            existing.setUsername(changing.getUsername());
-        }
-        if (changing.getPassword() != null) {
-            String newPassword = passwordEncoder.encode(changing.getPassword());
-            existing.setPassword(newPassword);
-        }
+        Map<String, List<String>> errors = new HashMap<>();
         if (changing.getItems() != null) {
             existing.setItems(changing.getItems());
         }
+
+        if (changing.getUsername() != null) {
+            if (StringUtils.isNotBlank(changing.getUsername())) {
+                String newPassword = passwordEncoder.encode(changing.getPassword());
+                existing.setPassword(newPassword);
+            } else {
+                errors.put("username", List.of("username must not be empty"));
+            }
+        }
+
+        if (changing.getPassword() != null) {
+            if (StringUtils.isBlank(changing.getPassword())) {
+                errors.put("password", List.of("password must not be empty"));
+            } else if (changing.getPassword().length() < 8) {
+                errors.put("password", List.of("password must at least 8 chars"));
+            } else {
+                existing.setPassword(changing.getPassword());
+            }
+        }
+
+        if (!errors.isEmpty()) {
+            throw new FailedValidationException(errors);
+        }
+
+
     }
 }

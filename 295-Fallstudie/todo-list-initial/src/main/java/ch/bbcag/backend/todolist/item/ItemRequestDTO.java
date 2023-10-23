@@ -1,5 +1,9 @@
 package ch.bbcag.backend.todolist.item;
 
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Objects;
@@ -8,6 +12,10 @@ public class ItemRequestDTO {
     private String description;
     private Timestamp deletedAt;
     private Integer personId;
+
+    @NotBlank(message="must not be blank")
+    @NotNull(message="must not be null")
+    @Length(min = 3, max = 128, message = "length must be between 6 and 255")
     private String name;
     private Timestamp doneAt;
     private List<Integer> tagIds;

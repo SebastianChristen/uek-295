@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.EntityNotFoundException;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/tags")
@@ -34,7 +35,7 @@ public class TagController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> insert(@RequestBody TagRequestDTO tagRequestDTO) {
+    public ResponseEntity<?> insert(@Valid @RequestBody TagRequestDTO tagRequestDTO) {
         try {
             return ResponseEntity.status(HttpStatus.CREATED).body(tagService.insert(tagRequestDTO));
         } catch (DataIntegrityViolationException e) {
